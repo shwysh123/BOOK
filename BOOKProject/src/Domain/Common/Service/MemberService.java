@@ -103,7 +103,7 @@ public class MemberService {
 	
 	
 	//로그인
-	public String login(String id, String pw) throws Exception{
+	public Map<String,Object> login(String id, String pw) throws Exception{
 		//1 ID/PW 체크 ->Dao 전달받은 id와 일치하는 정보를 가져와서 Pw일치 확인
 		MemberDto dbDto = dao.select(id);
 		if(dbDto==null) {
@@ -120,7 +120,10 @@ public class MemberService {
 		sessionMap.put(sid, session);
 		
 		//3 세션에 대한정보를 클라이언트가 접근할수 있도록하는 세션구별Id(Session Cookie) 전달
-		return sid;
+		Map<String,Object> result = new HashMap();
+		result.put("sid", sid);
+		result.put("role", dbDto.getRole());
+		return result;
 	}
 	
 	//로그아웃
